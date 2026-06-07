@@ -1,0 +1,31 @@
+# .github/workflows/deploy.yml
+name: JALWA AI Bot Deploy
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install python-telegram-bot aiohttp
+    
+    - name: Run Bot
+      env:
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        ADMIN_IDS: ${{ secrets.ADMIN_IDS }}
+      run: |
+        python bot.py
